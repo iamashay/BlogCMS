@@ -1,0 +1,6 @@
+Features:
+1. Posts, Category
+2. Users, User roles
+3. Homepage -> Casaroul of Posts
+4. Sidebar can contain trending posts (by replies)
+5. Posts will have author
