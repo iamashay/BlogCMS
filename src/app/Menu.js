@@ -2,22 +2,32 @@
 
 import Link from "next/link"
 import { useState } from "react"
-
+import Image from "next/image"
+import dropDownIco from './assets/dropdown-black.svg'
 function DropDown({name, href, child}) {
 
     return (
         
             <li className={` h-full group relative px-4 cursor-pointer flex items-center hover:border-b-2 border-b-2 border-b-transparent hover:border-b-orange-600 max-md:border-none max-md:block max-md:w-full max-md:text-center`}>
-                <Link href={href} className="" >{name}</Link>
+                <div>
+                    <Link href={href} className="" >{name}</Link>
+                    {
+                        child?.length > 0 && 
+                        <Image src={dropDownIco} alt='dropdown icon' className="group-hover:rotate-180 transition-all invert inline" width={20} height={20}></Image>
+                    }
+                </div>
                 {
                 child?.length > 0 && 
-                <ul className={`group-hover:max-h-44 group-hover:visible border-gray-100 border-b border-x max-h-0 invisible overflow-hidden shadow-md max-md:shadow-none absolute transition-all px-3 bg-zinc-100 text-center top-[calc(100%+2px)] right-0 max-md:static`}>
-                    {
-                    child.map(menu =>
-                        <DropDown key={menu.href} name={menu.name} href={menu.href} child={menu.child} />
-                    )
-                    }
-                </ul>
+
+                <>
+                    <ul className={`group-hover:max-h-44 group-hover:visible border-gray-100 border-b border-x max-h-0 invisible overflow-hidden shadow-md max-md:shadow-none absolute transition-all px-3 bg-zinc-100 text-center top-[calc(100%+2px)] right-0 max-md:static`}>
+                        {
+                        child.map(menu =>
+                            <DropDown key={menu.href} name={menu.name} href={menu.href} child={menu.child} />
+                        )
+                        }
+                    </ul>
+                </>
                 }
             </li>
 
