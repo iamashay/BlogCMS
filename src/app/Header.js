@@ -11,7 +11,7 @@ const headerData = [
     {
         name: 'Tech',
         href: '/category/tech',
-        children: [
+        child: [
             {
                 name: 'News',
                 href: '/category/tech/news',
@@ -30,24 +30,14 @@ const headerData = [
 
 export default function Header() {
     return (
-        <header className="w-full border-b-gray-100 border-b shadow	px-9 flex justify-between">
+        <header className="w-full border-b-gray-100 border-b shadow	px-9 flex justify-between max-md:flex-col relative">
             <Link href='/'>
                 <Image className="cursor-pointer"
                     src={Logo}
                     alt='blogcms logo'
                 />
             </Link>
-            <nav>
-                <ul className="h-full flex flex-row gap-8 items-center">
-                    { 
-                    headerData &&
-                    headerData.map(menu => (
-                        <Menu key={menu.href} menu={menu}></Menu>
-                    ))
-
-                    }
-                </ul>
-            </nav>
+            <Menu headerData={headerData}></Menu>
         </header>
     )
 }
