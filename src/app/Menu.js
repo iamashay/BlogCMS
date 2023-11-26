@@ -11,7 +11,7 @@ function DropDown({name, href, child}) {
                 <Link href={href} className="" >{name}</Link>
                 {
                 child?.length > 0 && 
-                <ul className={`group-hover:max-h-44 group-hover:visible border-gray-100 border-b border-x max-h-0 invisible overflow-hidden shadow-md absolute transition-all px-3 bg-zinc-100 text-center top-[calc(100%+2px)] right-0 max-md:static`}>
+                <ul className={`group-hover:max-h-44 group-hover:visible border-gray-100 border-b border-x max-h-0 invisible overflow-hidden shadow-md max-md:shadow-none absolute transition-all px-3 bg-zinc-100 text-center top-[calc(100%+2px)] right-0 max-md:static`}>
                     {
                     child.map(menu =>
                         <DropDown key={menu.href} name={menu.name} href={menu.href} child={menu.child} />
