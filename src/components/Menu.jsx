@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import Image from "next/image"
-import dropDownIco from './assets/dropdown-black.svg'
+import dropDownIco from '@/app/assets/dropdown-black.svg'
 function DropDown({name, href, child}) {
 
     return (

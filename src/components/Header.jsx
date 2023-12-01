@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Menu from "./Menu"
-import Logo from "./assets/logo.png"
+import Logo from "@/app/assets/logo.png"
 import Link from "next/link"
 
 const headerData = [
@@ -30,7 +30,7 @@ const headerData = [
 
 export default function Header() {
     return (
-        <header className="w-full border-b-gray-100 border-b shadow	px-9 flex justify-between max-md:flex-col relative">
+        <header className="w-full border-b-gray-100 border-b shadow	px-9 flex justify-between max-md:flex-col relative mb-2">
             <Link href='/'>
                 <Image className="cursor-pointer"
                     src={Logo}
