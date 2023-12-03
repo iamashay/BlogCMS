@@ -23,10 +23,10 @@ function ArticleCard ({article}) {
     )
 }
 
-export default function ArticleList({articles}) {
+export default function ArticleList({data}) {
     return (
         <section className="grid grid-cols-1 max-md:grid-cols-1 gap-4">
-            {articles.map((article) => <ArticleCard key={article.title} article={article} />)}
+            {data.map((article) => <ArticleCard key={article.title} article={article} />)}
         </section>
     )
 }

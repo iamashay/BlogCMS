@@ -1,6 +1,15 @@
 import Article from "@/components/Article"
 import Comment from "@/components/CommentBox"
 
+export async function generateMetadata({ params, searchParams }, parent) {
+    // read route params
+    const id = params.id
+    return {
+      title: "Hi",
+      description: 'This is a blogpost!',
+    }
+}
+
 const post = {
     title: 'A very good post!',
     desc: 'Hi, this is a very good post you might want to read this to know more about it.',
@@ -52,10 +61,13 @@ const postComment = [
 
 export default function ArticlePage({article}) {
     return (
-        <Article article={post}>
-           {
-            post.commentEnabled && <Comment data={postComment} />
-           } 
-        </Article>
+        <main className='flex justify-center my-5'>
+            <Article article={post}>
+            {
+                post.commentEnabled && <Comment data={postComment} />
+            } 
+            </Article>
+        </main>
+
     )
 }
