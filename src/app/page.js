@@ -63,8 +63,8 @@ const topPosts = [
 export default function Home() {
   return (
     <div className='page-container p-4'>
-      <main>
-        <ArticleList articles={topPosts}></ArticleList>
+      <main className='flex justify-center my-5'>
+        <ArticleList data={topPosts}></ArticleList>
       </main>
     </div>
   )
