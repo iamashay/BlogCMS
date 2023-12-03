@@ -15,10 +15,7 @@ export default function Article({article, children}) {
             <main className="my-8">
                 <div dangerouslySetInnerHTML={{ __html: article.body }} />
             </main>
-            <section>
-                <h3 className="text-lg font-semibold">Comments:</h3>
-                {children}
-            </section>
+            {children}
         </article>
     )
 }

@@ -1,5 +1,5 @@
 import Article from "@/components/Article"
-import { CommentForm, CommentList } from "@/components/CommentBox"
+import Comment from "@/components/CommentBox"
 
 const post = {
     title: 'A very good post!',
@@ -20,13 +20,42 @@ const post = {
     <h3><a id="user-content-issues" class="anchor" aria-hidden="true" href="#issues"><svg aria-hidden="true" role="img" class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" style="display:inline-block;user-select:none;vertical-align:middle"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>Issues</h3>
     <p>Have you found an issue with tinymce-react or do you have a feature request? Open up an <a href="https://github.com/tinymce/tinymce-react/issues">issue</a> and let us know or submit a <a href="https://github.com/tinymce/tinymce-react/pulls">pull request</a>. <em>Note: For issues concerning TinyMCE please visit the <a href="https://github.com/tinymce/tinymce">TinyMCE repository</a>.</em></p>
     `,
+    commentEnabled: true,
 }
+
+const postComment = [
+    {
+        _id: 1,
+        name: "Akarsh",
+        body: "Hey! Excellent Post",
+        date: "2023-12-03"
+    },
+    {
+        _id: 2,
+        name: "Sahu",
+        body: "I am going to buy this!",
+        date: "2023-10-03"
+    },
+    {
+        _id: 3,
+        name: "Raj",
+        body: "I don't agree with  you",
+        date: "2023-11-03"
+    },
+    {
+        _id: 4,
+        name: "Sahil",
+        body: "Hey! Excellent Post",
+        date: "2023-12-03"
+    },
+]
 
 export default function ArticlePage({article}) {
     return (
         <Article article={post}>
-            <CommentForm />
-            <CommentList />
+           {
+            post.commentEnabled && <Comment data={postComment} />
+           } 
         </Article>
     )
 }
