@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Header></Header>
-        <main className='flex justify-center'>
+        <main className='flex justify-center my-5'>
           {children}
         </main>      
       </body>
