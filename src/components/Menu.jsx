@@ -39,7 +39,7 @@ export default function Menu({headerData}){
     return (
     <>
             <nav>
-                <ul className={`${!showMenu ? 'max-md:hidden' : 'max-md:flex'} h-full flex flex-row gap-8 items-center max-md:flex-col`}>
+                <ul className={`${!showMenu ? 'max-md:hidden' : 'max-md:flex'} h-full flex flex-row items-center max-md:flex-col`}>
                     { 
                     headerData &&
                     headerData.map(menu => (
