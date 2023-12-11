@@ -38,7 +38,7 @@ export default function Header() {
                 />
             </Link>
             <Menu headerData={headerData}></Menu>
-            <UserBox  />
+            <UserBox className="self-center cursor-pointer" />
         </header>
     )
 }
