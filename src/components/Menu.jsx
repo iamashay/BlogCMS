@@ -8,12 +8,19 @@ function DropDown({name, href, child}) {
 
     return (
         
-            <li className={` h-full group relative px-4 cursor-pointer flex items-center hover:border-b-2 border-b-2 border-b-transparent hover:border-b-orange-600 max-md:border-none max-md:block max-md:w-full max-md:text-center`}>
-                <div>
-                    <Link href={href} className="" >{name}</Link>
+            <li className={` h-full group relative cursor-pointer flex items-center hover:border-b-2 border-b-2 border-b-transparent hover:border-b-orange-600 max-md:border-none max-md:block max-md:w-full max-md:text-center max-md:px-8`}>
+                <div className="h-full w-full flex justify-center gap-1">
                     {
-                        child?.length > 0 && 
-                        <Image src={dropDownIco} alt='dropdown icon' className="group-hover:rotate-180 transition-all invert inline" width={20} height={20}></Image>
+                        child?.length > 0 ?
+                        (
+                            <>
+                                <Link href={href} className="h-full w-full flex items-center px-4 pr-0" >{name}</Link>
+                                <Image src={dropDownIco} alt='dropdown icon' className="group-hover:rotate-180 transition-all invert inline" width={20} height={20}></Image>
+                            </>
+                        ) :
+                        (   
+                            <Link href={href} className="h-full w-full flex items-center px-4" >{name}</Link>
+                        )
                     }
                 </div>
                 {
@@ -39,7 +46,7 @@ export default function Menu({headerData}){
     return (
     <>
             <nav>
-                <ul className={`${!showMenu ? 'max-md:hidden' : 'max-md:flex'} h-full flex flex-row items-center max-md:flex-col`}>
+                <ul className={`${!showMenu ? 'max-md:hidden' : 'max-md:flex'} h-full flex flex-row items-center max-md:flex-col max-md:pt-4`}>
                     { 
                     headerData &&
                     headerData.map(menu => (
