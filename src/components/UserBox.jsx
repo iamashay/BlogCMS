@@ -9,7 +9,7 @@ export async function getStaticProps() {
     return { props: { headerMenuId } }
 }
 
-export default function UserBox({className, children, key: headerMenuId}) {
+export default function UserBox({className, children, containerTop}) {
     const [openBox, setOpenBox] = useState(false)
     const currentURL = usePathname()
     console.log(currentURL)
@@ -20,7 +20,7 @@ export default function UserBox({className, children, key: headerMenuId}) {
             <div onClick={() => setOpenBox(!openBox)} className="cursor-pointer">
                 <UserIcon title="User" />
             </div>
-            <div style={{display: openBox ? 'block' : 'none'}} className = {`bg-white shadow-lg absolute -right-3  mr-4 top-11 p-4 w-max`}>
+            <div style={{display: openBox ? 'block' : 'none'}} className = {`bg-white shadow-lg absolute -right-3  mr-4 p-4 w-max `+ (containerTop  || 'top-11')}>
                 {children} 
             </div>
         </span>

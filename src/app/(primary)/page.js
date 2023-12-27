@@ -1,7 +1,14 @@
+
 import Image from 'next/image'
 import ArticleList from '@/components/ArticleList'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { resolve } from 'styled-jsx/css'
 
-const topPosts = [
+async function getPosts() {
+  //await new Promise((resolve, rejec) => setInterval(() => resolve(2), 9000))
+  
+  return [
   {
     title: 'A very good post!',
     desc: 'Hi, this is a very good post you might want to read this to know more about it.',
@@ -59,12 +66,13 @@ const topPosts = [
     date: 'November 16, 2023',
   },
 ]
+}
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className='page-container p-4'>
       <main className='flex justify-center my-5'>
-        <ArticleList data={topPosts}></ArticleList>
+        <ArticleList data={await getPosts()}></ArticleList>
       </main>
     </div>
   )
