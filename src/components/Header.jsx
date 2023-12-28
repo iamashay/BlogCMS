@@ -1,14 +1,8 @@
-
 import Image from "next/image"
 import Menu from "./Menu"
 import Logo from "@/app/assets/logo.png"
 import Link from "next/link"
 import UserBox from "./UserBox"
-import { headers } from 'next/headers'
-
-
-
-  
 
 const headerData = [
     {
@@ -48,7 +42,7 @@ export default function Header() {
                 </Link>
             </span>
             <Menu headerData={headerData} className="flex-shrink"></Menu>
-            <UserBox  className="self-center max-md:absolute max-md:top-1.5 max-md:right-10 max-md:mr-3 flex-shrink">
+            <UserBox  className="self-center max-md:absolute max-md:top-1.5 max-md:right-10 max-md:mr-3 flex-shrink ">
                 <ul>
                     <Link href={"/login"}><li>Login</li></Link>
                     <Link href={"/register"}><li>Sign Up</li></Link>
