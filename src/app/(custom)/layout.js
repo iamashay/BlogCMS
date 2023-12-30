@@ -3,7 +3,7 @@ import '@/app/globals.css'
 import Link from 'next/link'
 import Logo from '@/app/assets/logo.png'
 import Image from 'next/image'
-import UserBox from '@/components/UserBox'
+import UserBox from '@/components/UserBoxSkeleton'
 import Sidebar from '@/components/Dashboard/Sidebar'
 import Header from '@/components/Dashboard/Header'
 const inter = Inter({ subsets: ['latin'] })

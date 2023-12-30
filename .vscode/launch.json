@@ -5,13 +5,17 @@
         "name": "Next.js: debug server-side",
         "type": "node-terminal",
         "request": "launch",
-        "command": "npm run dev"
+        "command": "npm run dev",
+        "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+
       },
       {
         "name": "Next.js: debug client-side",
         "type": "chrome",
         "request": "launch",
-        "url": "http://localhost:3000"
+        "url": "http://localhost:3000",
+        "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+
       },
       {
         "name": "Next.js: debug full stack",
@@ -22,7 +26,10 @@
           "pattern": "- Local:.+(https?://.+)",
           "uriFormat": "%s",
           "action": "debugWithChrome"
-        }
+        },
+        "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
+
       }
-    ]
+    ],
+
   }

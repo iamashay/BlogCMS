@@ -30,7 +30,7 @@ export default function Login() {
 
         }
         toast.success("Login success")
-        router.push("/login")
+        router.push("/")
     }   
 
     return (

@@ -1,28 +1,32 @@
 'use client'
-import {  useEffect, useState } from "react"
-import { UserIcon } from "./SVG"
-import { usePathname } from "next/navigation"
-import Image from "next/image"
+import Link from "next/link"
+import { useSession } from "next-auth/react"
+import UserBoxSkeleton from "./UserBoxSkeleton"
+import { signOut } from "next-auth/react"
 
-export async function getStaticProps() {
-    const headerMenuId = +new Date()
-    return { props: { headerMenuId } }
+const DefaultBoxData = () => {
+    return <ul>
+    <Link href={"/login"}><li>Login</li></Link>
+    <Link href={"/register"}><li>Sign Up</li></Link>
+    </ul>
 }
 
-export default function UserBox({className, children, containerTop}) {
-    const [openBox, setOpenBox] = useState(false)
-    const currentURL = usePathname()
-    console.log(currentURL)
-    useEffect(() => setOpenBox(false), [currentURL])
 
+export default function UserBox() {
+    const {data: session, status} = useSession()
+    console.log(session, status)
+    const userData = session?.user
     return (
-        <span className={`${className} relative`} >
-            <div onClick={() => setOpenBox(!openBox)} className="cursor-pointer">
-                <UserIcon title="User" />
-            </div>
-            <div style={{display: openBox ? 'block' : 'none'}} className = {`bg-white shadow-lg absolute -right-3  mr-4 p-4 w-max `+ (containerTop  || 'top-11')}>
-                {children} 
-            </div>
-        </span>
+        <UserBoxSkeleton  className="self-center max-md:absolute max-md:top-1.5 max-md:right-10 max-md:mr-3 flex-shrink" image={session?.image}>
+            {
+                !(status === 'authenticated' && userData) ?
+                <DefaultBoxData /> :
+                <ul className="text-sm">
+                    <li className="text-base">Hi, <span className="font-semibold">{userData.username}</span></li>
+                    <li onClick={signOut} className="cursor-pointer">Logout</li>
+                </ul>
+            }
+
+        </UserBoxSkeleton>
     )
 }

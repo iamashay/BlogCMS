@@ -3,6 +3,27 @@ import Menu from "./Menu"
 import Logo from "@/app/assets/logo.png"
 import Link from "next/link"
 import UserBox from "./UserBox"
+// import { authOptions } from '@/app/api/auth/[...nextauth]/route.js'
+// import { getServerSession } from "next-auth/next"
+
+// export async function getServerSideProps(context) {
+//   const session = await getServerSession(context.req, context.res, authOptions)
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       },
+//     }
+//   }
+
+//   return {
+//     props: {
+//       session,
+//     },
+//   }
+// }
+
 
 const headerData = [
     {
@@ -30,7 +51,7 @@ const headerData = [
 ]
 
 export default function Header() {
-
+    
     return (
         <header className="w-full border-b-gray-100 border-b shadow	px-9 flex justify-between max-md:flex-col relative mb-2">
             <span className="flex-grow">
@@ -42,12 +63,7 @@ export default function Header() {
                 </Link>
             </span>
             <Menu headerData={headerData} className="flex-shrink"></Menu>
-            <UserBox  className="self-center max-md:absolute max-md:top-1.5 max-md:right-10 max-md:mr-3 flex-shrink ">
-                <ul>
-                    <Link href={"/login"}><li>Login</li></Link>
-                    <Link href={"/register"}><li>Sign Up</li></Link>
-                </ul>
-            </UserBox>
+            <UserBox />
         </header>
     )
 }

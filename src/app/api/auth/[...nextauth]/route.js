@@ -6,8 +6,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
 const prisma = new PrismaClient()
 
-const authOptions = {
-  adapter: PrismaAdapter(prisma),
+export const authOptions = {
+  // adapter: PrismaAdapter(prisma),
   theme: {
     logo: "https://next-auth.js.org/img/logo/logo-sm.png",
   },
@@ -21,28 +21,51 @@ const authOptions = {
         async authorize(credentials, req) {
           const {username, email, password} = credentials
           const user = await prisma.user.findUnique({where: {username}})
-          console.log('user ', user, username, credentials, {where: {username}})
+          //console.log('user ', user, username, credentials, {where: {username}})
           if (!user) throw new Error('No user found!')
           const validatePassword = await bcryptjs.compare(password, user.password)
           if (validatePassword) {
-            return user
+            const {username, role, email} = user
+            return {username, role, email}
           } else {
             throw new Error('Invalid Password')
     
           }
-        }
-      })
+        },
+
+      }),
+
+
   ],
+  callbacks: {
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.user = user
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      if (session.user) {
+          session.user = token.user
+      }
+      return session;
+    }
+  },
   session: {
-    strategy: 'jwt'
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   pages: {
     signIn: '/login', // Custom sign-in page
   },
-  secret: "asdasdasdk789",
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV !== "production"
 }
 
-const  handler  = NextAuth(authOptions)
+const handler  = NextAuth(authOptions)
 
 export {handler as GET, handler as POST}
