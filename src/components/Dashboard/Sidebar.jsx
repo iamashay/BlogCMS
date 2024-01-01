@@ -6,9 +6,11 @@ import { UserIcon } from "../SVG"
 import Link from "next/link"
 import { useState } from "react"
 import { LeftArrowIcon } from "../SVG"
+import { useSession } from "next-auth/react"
 
 function Menu({item}) {
     const pathName = usePathname()
+
     return (
         <div className="my-2">
             {
@@ -33,11 +35,13 @@ function Menu({item}) {
 
 export default function Sidebar({menuData}) {
     const [showSidebar, setShowSidebar] = useState(true)
+    const {data: session, status} = useSession()
+    const userData = session?.user
     return (
         <div className="relative">
-            <aside className={`h-screen flex flex-col fixed shadow-xl overflow-x-hidden transition-all duration-300 ${showSidebar ? 'w-56' : 'w-0 opacity-0'}`}>
+            <aside className={`h-screen flex flex-col shadow-xl sticky overflow-x-hidden transition-all duration-300 ${showSidebar ? 'w-56' : 'w-0 opacity-0'}`}>
                 <Link href='/dashboard'><Image src={Logo} alt='logo' /></Link>
-                <div className="flex items-center text-sm gap-2 m-4 rounded-md p-2 bg-slate-200"><UserIcon className="flex-shrink-0"/> <span className="break-words">Mr. JoeBorder</span></div>
+                <div className="flex items-center text-sm gap-2 m-4 rounded-md p-2 bg-slate-200"><UserIcon className="flex-shrink-0"/> <span className="break-words">{userData?.username || 'Not Found'}</span></div>
                 <div>
                     {
                         menuData?.length > 0 && menuData.map((item) => <Menu key={item.name+(+new Date())} item={item} />)

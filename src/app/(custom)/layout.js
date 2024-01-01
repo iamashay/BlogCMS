@@ -6,6 +6,7 @@ import Image from 'next/image'
 import UserBox from '@/components/UserBoxSkeleton'
 import Sidebar from '@/components/Dashboard/Sidebar'
 import Header from '@/components/Dashboard/Header'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -27,7 +28,7 @@ const menuData = [
           },
           {
               name: 'New Posts',
-              href: '/category/tech/sale',
+              href: '/dashboard/post/new',
           },
           {
               name: 'All Posts',
@@ -55,16 +56,16 @@ const menuData = [
 ]
 
 
-export default function Layout({ children }) {
+export default function Layout({ children }) {  
   return (
     <html lang="en">
     <body className={inter.className}>
-      <div>
-        <Sidebar menuData={menuData}/>
-        <div>
-          <Header />
-          {children}
-        </div>
+      <div className='flex flex-row w-full'>
+          <Sidebar menuData={menuData} />
+          <div className='flex flex-col flex-grow'>
+            <Header />
+            {children}
+          </div>
       </div>
     </body>
     </html>

@@ -22,17 +22,29 @@ model Session {
 }
 
 model User {
-  id String @id @default(uuid())
-  email String @unique
-  username String @unique
-  password String
-  verifyToken String?
-  verifyExpiry DateTime?
-  forgotPassToken String?
+  id               String    @id @default(uuid())
+  email            String    @unique
+  username         String    @unique
+  password         String
+  verifyToken      String?
+  verifyExpiry     DateTime?
+  forgotPassToken  String?
   forgotPassExpiry DateTime?
-  role String @default("User")
-  sessions      Session[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role             String    @default("User")
+  sessions         Session[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  posts            Post[]
 }
 
+model Post {
+  id     String @id @default(uuid())
+  author User   @relation(fields: [userId], references: [id])
+  slug   String @unique
+  title  String
+  body   String
+  userId String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  captionImg String?  
+}

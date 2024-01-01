@@ -14,8 +14,10 @@ const DefaultBoxData = () => {
 
 export default function UserBox() {
     const {data: session, status} = useSession()
-    console.log(session, status)
+
     const userData = session?.user
+    // setInterval(() => console.log(session, status, userData), 1000)
+    
     return (
         <UserBoxSkeleton  className="self-center max-md:absolute max-md:top-1.5 max-md:right-10 max-md:mr-3 flex-shrink" image={session?.image}>
             {
@@ -23,6 +25,7 @@ export default function UserBox() {
                 <DefaultBoxData /> :
                 <ul className="text-sm">
                     <li className="text-base">Hi, <span className="font-semibold">{userData.username}</span></li>
+                    <li className="cursor-pointer"><Link href="/dashboard">Dashboard</Link></li>
                     <li onClick={signOut} className="cursor-pointer">Logout</li>
                 </ul>
             }

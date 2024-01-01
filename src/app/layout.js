@@ -1,10 +1,8 @@
 import SessionProvider from "@/lib/SessionProvider"
-import { getServerSession } from "next-auth"
-import { authOptions } from "./api/auth/[...nextauth]/route"
+import {auth} from '@/auth'
 
 export default async function RootLayout({ children }) {
-    const session = await getServerSession(authOptions)
-    //console.log(session)
+    const session = await auth()
     return (
         <SessionProvider session={session}>
             {children}
