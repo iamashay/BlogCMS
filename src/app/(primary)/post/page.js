@@ -1,5 +1,9 @@
 import Article from "@/components/Article"
 import Comment from "@/components/CommentBox"
+import { cache } from 'react'
+import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
 
 export async function generateMetadata({ params, searchParams }, parent) {
     // read route params
@@ -32,6 +36,11 @@ const post = {
     commentEnabled: true,
 }
 
+const getPost = async () => {
+    const postList = await fetch('/api/post/')
+    console.log(postList)
+}
+
 const postComment = [
     {
         _id: 1,
@@ -59,7 +68,7 @@ const postComment = [
     },
 ]
 
-export default function ArticlePage({article}) {
+export default function ArticlePage({article}) {[]
     return (
         <main className='flex justify-center my-5'>
             <Article article={post}>
