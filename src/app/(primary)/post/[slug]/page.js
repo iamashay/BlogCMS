@@ -4,7 +4,7 @@ import { cache } from 'react'
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
-
+const API_URL = process.env.API_URL
 export async function generateMetadata({ params, searchParams }, parent) {
     // read route params
     const id = params.id
@@ -36,9 +36,18 @@ const post = {
     commentEnabled: true,
 }
 
-const getPost = async () => {
-    const postList = await fetch('/api/post/')
-    console.log(postList)
+async function getPost (slug) {
+    //await new Promise((resolve, rejec) => setInterval(() => resolve(2), 9000))
+    try {
+        const postData = await fetch(API_URL+'/post/'+slug, {cache: 'no-cache'})
+        const postDataJSON = await postData.json()
+        console.log(postDataJSON)
+        return postDataJSON
+    } catch (e) {
+        console.log(e)
+        return {}
+    }
+
 }
 
 const postComment = [
@@ -68,15 +77,16 @@ const postComment = [
     },
 ]
 
-export default function ArticlePage({article}) {[]
+export default async function ArticlePage({article, params}) {
+    const post = await getPost(params?.slug)
     return (
-        <main className='flex justify-center my-5'>
+        <div className='flex justify-center my-5'>
             <Article article={post}>
             {
                 post.commentEnabled && <Comment data={postComment} />
             } 
             </Article>
-        </main>
+        </div>
 
     )
 }

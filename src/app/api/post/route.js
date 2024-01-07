@@ -12,7 +12,7 @@ async function GET(req) {
     try {
         const postList = await prisma.post.findMany(
             {
-                take: 5, 
+                take: 15, 
                 orderBy: [ { createdAt: 'desc' } ], 
                 select: { 
                     userId: false,

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const { scopedPreflightStyles } = require('tailwindcss-scoped-preflight');
+
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -14,6 +16,11 @@ module.exports = {
       },
     },
   },
-  plugins: [],
-  
+  plugins: [
+    scopedPreflightStyles({
+      cssSelector: '.notw', // or .notailwind or even [data-tailwind=false] - any valid CSS selector of your choice
+      mode: 'except matched',
+    }),
+  ],
+
 }

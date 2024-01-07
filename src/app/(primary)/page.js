@@ -23,7 +23,7 @@ async function getPosts() {
 
 export default async function Home() {
   const postList = await getPosts()
-  console.log(postList)
+  //console.log(postList)
   return (
     <div className='page-container p-4'>
       <main className='flex justify-center my-5'>

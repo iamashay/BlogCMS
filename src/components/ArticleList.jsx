@@ -1,13 +1,7 @@
 import Link from "next/link"
 import { WriterIcon, DateIcon } from "./SVG"
+import { createSummary, formatDate } from "@/lib/PostFunctions"
 
-const createSummary = (body) => {
-    return body?.replace(/(<([^>]+)>)/gi, '').trim().slice(0, process.env.SUMMARY_CHAR_LIMIT)
-}
-
-const formatDate = (date) => {
-    return date?.split('T')[0]
-}
 
 function ArticleCard ({article}) {
     const postLink= "/post/"+article?.slug
