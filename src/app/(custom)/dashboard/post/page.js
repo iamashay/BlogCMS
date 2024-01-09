@@ -1,10 +1,29 @@
-export default function ViewPost() {
+import PostListTable from "@/components/Dashboard/PostListTable"
+import { getPostsByUser, getAllPosts } from "@/lib/PostFunctions"
+
+const defaultData = [
+    {
+      firstName: 'tanner',
+      lastName: 'linsley',
+      age: 24,
+      visits: 100,
+      status: 'In Relationship',
+      progress: 50,
+    }
+]
+
+
+
+export default async function ViewPost({searchParams}) {
+    const {showAll} = searchParams
+    let defaultData
+    showAll ?   defaultData = await getAllPosts()
+              : defaultData = await getAllPosts()
+    //console.log(defaultData)
     return (
-        <main className='flex justify-center my-5 mx-5'>
-            <h1>New Post</h1>
-            <div className='grid grid-cols-4 gap-10 break-words w-4/5'>
-                d
-            </div>
+        <main className='m-5'>
+            <h1 className="fle">Your Posts</h1>
+            <PostListTable defaultData={defaultData}></PostListTable>
         </main>
     )
 }

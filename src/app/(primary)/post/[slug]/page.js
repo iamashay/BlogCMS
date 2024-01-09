@@ -2,6 +2,7 @@ import Article from "@/components/Article"
 import Comment from "@/components/CommentBox"
 import { cache } from 'react'
 import { PrismaClient } from "@prisma/client"
+import { headers } from 'next/headers'
 
 const prisma = new PrismaClient()
 const API_URL = process.env.API_URL
