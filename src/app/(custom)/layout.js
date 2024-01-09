@@ -6,6 +6,8 @@ import Image from 'next/image'
 import UserBox from '@/components/UserBoxSkeleton'
 import Sidebar from '@/components/Dashboard/Sidebar'
 import Header from '@/components/Dashboard/Header'
+import { auth } from '@/auth'
+import { NextResponse } from 'next/server'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +26,7 @@ const menuData = [
       child: [
           {
               name: 'Your Posts',
-              href: '/category/tech/news',
+              href: '/dashboard/post',
           },
           {
               name: 'New Posts',
@@ -56,7 +58,11 @@ const menuData = [
 ]
 
 
-export default function Layout({ children }) {  
+export default async function Layout({ children }) {  
+  const session = await auth()
+  if (!session)
+  return NextResponse.redirect(new URL('/login', request.url))
+
   return (
     <html lang="en">
     <body className={inter.className}>
