@@ -3,7 +3,6 @@ import Image from 'next/image'
 import ArticleList from '@/components/ArticleList'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { resolve } from 'styled-jsx/css'
 
 const API_URL = process.env.API_URL
 

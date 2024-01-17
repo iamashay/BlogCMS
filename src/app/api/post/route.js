@@ -51,7 +51,7 @@ async function POST(req){
 
             }
         })
-        revalidatePostRelevant('/post/'+savePost.id, true)
+        revalidatePostRelevant('/post/'+savePost.slug, true)
         return NextResponse.json(savePost, {status: 200})
     }catch(err){
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
@@ -78,7 +78,7 @@ async function PUT(req) {
                 id
             }
         })
-        revalidatePostRelevant('/post/'+updatePost.id)
+        revalidatePostRelevant('/post/'+updatePost.slug)
         return NextResponse.json(updatePost, {status: 200})
     }catch(err){
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
@@ -91,4 +91,21 @@ async function PUT(req) {
     }
 }
 
-export { POST, PUT, GET }
+async function DELETE(req) {
+    try {
+        const {id} = await req.json()
+        const deletePost = await prisma.post.delete({where: {id}})
+        revalidatePostRelevant('/post/'+deletePost.slug)
+        return NextResponse.json(deletePost, {status: 200})
+    }catch(err){
+        if (err instanceof Prisma.PrismaClientKnownRequestError) {
+            // The .code property can be accessed in a type-safe manner
+             if (err?.code === 'P2025') {
+                return NextResponse.json({error: 'Post doesn\'t exist'}, {status: 500})
+            }
+        }
+        return NextResponse.json({error: err.message}, {status: 500})
+    }
+}
+
+export { POST, PUT, GET, DELETE }

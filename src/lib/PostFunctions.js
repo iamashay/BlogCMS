@@ -38,7 +38,9 @@ export const getAllPosts = cache(async (username) => {
                     username: true
                 }
             }
-        }
+        },
+        orderBy: {createdAt: 'desc'}
     })
     return postList
 })
+

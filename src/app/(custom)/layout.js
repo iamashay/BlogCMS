@@ -8,6 +8,7 @@ import Sidebar from '@/components/Dashboard/Sidebar'
 import Header from '@/components/Dashboard/Header'
 import { auth } from '@/auth'
 import { NextResponse } from 'next/server'
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,7 +35,7 @@ const menuData = [
           },
           {
               name: 'All Posts',
-              href: '/category/tech/sale',
+              href: '/dashboard/post/all',
           }
       ]
   },
@@ -66,6 +67,7 @@ export default async function Layout({ children }) {
   return (
     <html lang="en">
     <body className={inter.className}>
+      <Toaster></Toaster>
       <div className='flex flex-row w-full'>
           <Sidebar menuData={menuData} />
           <div className='flex flex-col flex-grow'>

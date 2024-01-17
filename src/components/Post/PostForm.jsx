@@ -52,9 +52,9 @@ export function PostForm({postData, create}) {
 
     return (
                 <form onSubmit={submitPost} method="post" className='flex flex-col'>
-                    <input name="title" id="title" placeholder="Enter Title" required className='border border-gray-300 my-3 p-1 w-full shadow-sm' value={postData?.title}></input>
+                    <input name="title" id="title" placeholder="Enter Title" required className='border border-gray-300 my-3 p-1 w-full shadow-sm' defaultValue={postData?.title}></input>
                     <div className='flex gap-4 items-center'>
-                        <label htmlFor="slug">Slug:</label><input className='flex-grow border border-gray-300 my-2 p-1 w-full shadow-sm text-sm' type="text" id="slug" name="slug" value={(postData?.slug)}></input>
+                        <label htmlFor="slug">Slug:</label><input className='flex-grow border border-gray-300 my-2 p-1 w-full shadow-sm text-sm' type="text" id="slug" name="slug" defaultValue={(postData?.slug)}></input>
                     </div>
                     <Editor 
                     onInit={(evt, editor) => editorRef.current = editor}
