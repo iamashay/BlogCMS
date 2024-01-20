@@ -40,10 +40,23 @@ const post = {
 async function getPost (slug) {
     //await new Promise((resolve, rejec) => setInterval(() => resolve(2), 9000))
     try {
-        const postData = await fetch(API_URL+'/post/'+slug, {cache: 'no-cache'})
+        const postData = await fetch(API_URL+'/post/'+slug)
         const postDataJSON = await postData.json()
         console.log(postDataJSON)
         return postDataJSON
+    } catch (e) {
+        console.log(e)
+        return {}
+    }
+
+}
+
+async function getComments(slug) {
+    //await new Promise((resolve, rejec) => setInterval(() => resolve(2), 9000))
+    try {
+        const commentData = await fetch(API_URL+'/comment?slug='+slug, {cache: "no-cache"})
+        const commentDataJSON = await commentData.json()
+        return commentDataJSON
     } catch (e) {
         console.log(e)
         return {}
@@ -79,12 +92,13 @@ const postComment = [
 ]
 
 export default async function ArticlePage({article, params}) {
-    const post = await getPost(params?.slug)
+    const {slug} = params
+    const post = await getPost(slug)
     return (
         <div className='flex justify-center my-5'>
             <Article article={post}>
             {
-                post.commentEnabled && <Comment data={postComment} />
+                !post.commentEnabled && <Comment data={await getComments(slug)} />
             } 
             </Article>
         </div>

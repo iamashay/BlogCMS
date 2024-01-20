@@ -9,24 +9,28 @@ const revalidatePostRelevant = (slug, newPost) => {
     if (!newPost) revalidatePath('/post/'+slug, "page")
 }
 
-async function GET(req) {
+async function GET(req, searchParams) {
     try {
-        const postList = await prisma.post.findMany(
+        const slug = await req.nextUrl.searchParams.get('slug')
+        const commentList = await prisma.comment.findMany(
             {
-                take: 15, 
-                orderBy: [ { createdAt: 'desc' } ], 
-                select: { 
-                    userId: false,
-                    title: true,
-                    slug: true,
-                    createdAt: true,
-                    updatedAt: true,
+                take: 6, 
+                // orderBy: [ { createdAt: 'desc' } ], 
+                select: {
+                    id: true,
+                    guestName: true,
                     body: true,
+                    createdAt: true,
                     author: {select: {username: true}},
-                } 
+                },
+                where: {
+                    post: {
+                        slug
+                    }
+                }
             }
         )
-        return NextResponse.json(postList, {status: 200})
+        return NextResponse.json(commentList, {status: 200})
     }catch(err){
         // if (err instanceof Prisma.PrismaClientKnownRequestError) {
         //     // The .code property can be accessed in a type-safe manner
@@ -41,26 +45,28 @@ async function GET(req) {
 async function POST(req){
     try {
         const session = await auth()
-        const {title, body, slug} = await req.json()
-        const savePost = await prisma.post.create({
-            data: {
-                title,
-                body,
-                slug,
-                author: {
-                    connect: {username: session?.user?.username}
-                },
-
-            }
+        const {guestName, body, parentComment, slug} = await req.json()
+        const query = {
+            guestName,
+            body,
+            post: {
+                connect: {slug}
+            },
+        }
+        if (parentComment) query.parentComment = {
+            connect: {id: parentComment}
+        }
+        const saveCommment = await prisma.comment.create({
+            data: query
         })
-        revalidatePostRelevant('/post/'+savePost.slug, true)
-        return NextResponse.json(savePost, {status: 200})
+        revalidatePostRelevant('/post/'+slug, true)
+        return NextResponse.json(saveCommment, {status: 200})
     }catch(err){
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
-            if (err?.code === 'P2002') {
-                if (err?.meta?.target[0] === 'slug') return NextResponse.json({error: 'Slug already exists'}, {status: 500})
-            }
+            // if (err?.code === 'P2002') {
+            //     if (err?.meta?.target[0] === 'slug') return NextResponse.json({error: 'Slug already exists'}, {status: 500})
+            // }
         }
         return NextResponse.json({error: err.message}, {status: 500})
     }
@@ -96,16 +102,16 @@ async function PUT(req) {
 async function DELETE(req) {
     try {
         const {id} = await req.json()
-        const deletePost = await prisma.post.delete({where: {id}})
+        const deleteComment = await prisma.comment.delete({where: {id}})
         revalidatePostRelevant('/post/'+deletePost.slug)
-        return NextResponse.json(deletePost, {status: 200})
+        return NextResponse.json(deleteComment, {status: 200})
     }catch(err){
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
              if (err?.code === 'P2025') {
-                return NextResponse.json({error: 'Post doesn\'t exist'}, {status: 500})
+                return NextResponse.json({error: 'Comment doesn\'t exist'}, {status: 500})
             }
-        }
+        }   
         return NextResponse.json({error: err.message}, {status: 500})
     }
 }

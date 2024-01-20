@@ -35,16 +35,35 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   posts            Post[]
+  comments         Comment[]
 }
 
 model Post {
-  id     String @id @default(uuid())
-  author User   @relation(fields: [userId], references: [id])
-  slug   String @unique
-  title  String
-  body   String
-  userId String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  captionImg String?  
+  id             String    @id @default(uuid())
+  author         User      @relation(fields: [userId], references: [id])
+  slug           String    @unique
+  title          String
+  body           String
+  userId         String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  captionImg     String?
+  comments       Comment[]
+  commentEnabled Boolean   @default(true)
+}
+
+model Comment {
+  id             String    @id @default(uuid())
+  author         User?     @relation(fields: [userId], references: [id])
+  guestName      String?
+  body           String
+  post           Post      @relation(fields: [postId], references: [id])
+  postId         String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  userId         String?
+  parentComment  Comment?  @relation("parentComments", fields: [commentId], references: [id])
+  parentComments Comment[] @relation("parentComments")
+  commentId      String?
+  email          String?
 }

@@ -1,13 +1,14 @@
+import { formatDate } from "@/lib/PostFunctions"
+import { comment } from "postcss"
 function CommentList({data}) {
-
     return (
         <section>
             {
                 data?.length > 0 && 
                 data.map((comment)=> {
                     return (
-                    <article key={comment._id} className="bg-gray-200 my-2 p-2">
-                        <header className="text-sm"><b>{comment.name}</b> commented on <time>{comment.date}</time></header>
+                    <article key={comment.id} className="bg-gray-200 my-2 p-2">
+                        <header className="text-sm"><b>{comment.guestName}</b> commented on <time>{formatDate(comment.createdAt)}</time></header>
                         <p className="p-1">{comment.body}</p>
                     </article>
                     )

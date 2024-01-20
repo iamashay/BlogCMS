@@ -36,8 +36,23 @@ const menuData = [
           {
               name: 'All Posts',
               href: '/dashboard/post/all',
+              role: 'Admin',
           }
       ]
+  },
+  {
+    name: 'Comments',
+    child: [
+        {
+            name: 'Your Comments',
+            href: '/dashboard/post',
+        },
+        {
+            name: 'All Comments',
+            href: '/dashboard/post/new',
+            role: 'Admin',
+        },
+    ]
   },
   {
       name: 'User',
@@ -45,6 +60,7 @@ const menuData = [
           {
               name: 'All Users',
               href: '/category/tech/news',
+              role: 'Admin',
           },
           {
               name: 'Profile',
@@ -69,7 +85,7 @@ export default async function Layout({ children }) {
     <body className={inter.className}>
       <Toaster></Toaster>
       <div className='flex flex-row w-full'>
-          <Sidebar menuData={menuData} />
+          <Sidebar menuData={menuData}  />
           <div className='flex flex-col flex-grow'>
             <Header />
             {children}

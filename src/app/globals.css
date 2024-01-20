@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    #post-body h1 {
-          @apply text-lg;
+@layer components {
+    .dashboard-head {
+        @apply p-2 my-4 shadow-sm w-fit rounded-md border border-gray-200
     }
 }

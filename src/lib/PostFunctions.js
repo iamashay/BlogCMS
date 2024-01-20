@@ -14,9 +14,16 @@ export const formatDate = (date) => {
 
 export const getPostDataById =  cache( async (id) => {
     const postData = await prisma.post.findUnique({
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            }
+        },
         where: { id }
     })
-    if (!postData) redirect('/dashboard/post/new')
+    if (!postData) return redirect('/dashboard/post/new')
     return postData
 })
 
@@ -24,13 +31,37 @@ export const getPostsByUser = cache(async (username) => {
     const postList = await prisma.post.findMany({
         include: {
             author: {
-                where: {username}
+                select: {
+                    username: true
+                }
+            }
+        },
+        orderBy: {createdAt: 'desc'},
+        where: {
+            author: {
+                username
             }
         }
     })
+    console.log({
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            }
+        },
+        orderBy: {createdAt: 'desc'},
+        where: {
+            author: {
+                username
+            }
+        }
+    })
+    return postList
 })
 
-export const getAllPosts = cache(async (username) => {
+export const getAllPosts = cache(async () => {
     const postList = await prisma.post.findMany({
         include: {
             author: {

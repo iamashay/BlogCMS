@@ -1,6 +1,8 @@
 import PostListTable from "@/components/Dashboard/PostListTable"
 import { getPostsByUser, getAllPosts } from "@/lib/PostFunctions"
 import { PopUp } from "@/components/Reusables/PopUp"
+import { authorizeUser } from "@/lib/Authorize"
+import { redirect } from "next/navigation"
 const defaultData = [
     {
       firstName: 'tanner',
@@ -15,11 +17,12 @@ const defaultData = [
 
 
 export default async function ViewPost({searchParams}) {
+    if (!await authorizeUser({role: 'Admin', compareRole: true})) redirect('/')
     const defaultData = await getAllPosts()
     //console.log(defaultData)
     return (
         <main className='m-5'>
-            <h1 className="fle">All Posts</h1>
+            <h1 className="dashboard-head">All Posts</h1>
             <PostListTable defaultData={defaultData}></PostListTable>
         </main>
     )

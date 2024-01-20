@@ -1,5 +1,8 @@
+import { auth } from "@/auth"
 import PostListTable from "@/components/Dashboard/PostListTable"
+import { authorizeUser } from "@/lib/Authorize"
 import { getPostsByUser, getAllPosts } from "@/lib/PostFunctions"
+import { redirect } from "next/navigation"
 
 const defaultData = [
     {
@@ -14,15 +17,15 @@ const defaultData = [
 
 
 
-export default async function ViewPost({searchParams}) {
-    const {showAll} = searchParams
-    let defaultData
-    showAll ?   defaultData = await getAllPosts()
-              : defaultData = await getAllPosts()
+export default async function ViewPost() {
+    const session = await authorizeUser()
+    if (!session) return redirect('/')
+    const defaultData = await getPostsByUser(session?.user?.username)
+
     //console.log(defaultData)
     return (
         <main className='m-5'>
-            <h1 className="fle">Your Posts</h1>
+            <h1 className="dashboard-head">Your Posts</h1>
             <PostListTable defaultData={defaultData}></PostListTable>
         </main>
     )

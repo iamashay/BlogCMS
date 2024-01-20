@@ -8,19 +8,21 @@ import { useState } from "react"
 import { LeftArrowIcon } from "../SVG"
 import { useSession } from "next-auth/react"
 
-function Menu({item}) {
+function Menu({item, role}) {
     const pathName = usePathname()
-
-    return (
+    const isRender = item?.role ? item?.role === role : true
+    return isRender && (
         <div className="my-2">
             {
                 !item?.href ?
                 <>
                     <h3 className="text-gray-400 mx-2">{item?.name}</h3>
                     <div className="text-sm">
-                        {item?.child?.length > 0 && item.child.map(childItem => (
-                            <Link href={childItem.href} key={childItem.name+(+new Date())} className={`${pathName === childItem.href && 'bg-gray-300 disabled:pointer-events-none'} mx-4 p-1 cursor-pointer hover:bg-gray-100 block transition-all rounded`}>{childItem.name}</Link>
-                        ))}
+                        { 
+                            item?.child?.length > 0 && item.child.map(childItem => (childItem?.role ? childItem?.role === role : true) && (
+                                <Link href={childItem.href} key={childItem.name+(+new Date())} className={`${pathName === childItem.href && 'bg-gray-300 disabled:pointer-events-none'} mx-4 p-1 cursor-pointer hover:bg-gray-100 block transition-all rounded`}>{childItem.name}</Link>
+                            ))
+                        }
                     </div>
                 </> 
                 :
@@ -44,9 +46,8 @@ export default function Sidebar({menuData}) {
                 <div className="flex items-center text-sm gap-2 m-4 rounded-md p-2 bg-slate-200"><UserIcon className="flex-shrink-0"/> <span className="break-words">{userData?.username || 'Not Found'}</span></div>
                 <div>
                     {
-                        menuData?.length > 0 && menuData.map((item) => <Menu key={item.name+(+new Date())} item={item} />)
+                        menuData?.length > 0 && menuData.map((item) => <Menu key={item.name+(+new Date())} item={item} role={session?.user?.role}/>)
                     }
-                    <Menu></Menu>
                 </div>  
 
             </aside>
