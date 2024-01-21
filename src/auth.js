@@ -23,7 +23,7 @@ export const {
           const user = await prisma.user.findUnique({where: {username}})
           //console.log('user ', user, username, credentials, {where: {username}})
           if (!user) throw new Error('No user found!')
-          const validatePassword = await bcryptjs.compare(password, user.password)
+          const validatePassword = bcryptjs.compare(password, user.password)
           if (validatePassword) {
             const {username, role, email} = user
             return {username, role, email}

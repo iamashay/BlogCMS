@@ -2,6 +2,7 @@ import { PrismaClient, Prisma } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/auth"
+import { authorizeUser } from "@/lib/Authorize";
 const prisma = new PrismaClient()
 
 const revalidatePostRelevant = (slug, newPost) => {
@@ -40,7 +41,8 @@ async function GET(req) {
 
 async function POST(req){
     try {
-        const session = await auth()
+        const session = await authorizeUser()
+        if (!await authorizeUser) return NextResponse.json({error: "Invalid permission"}, {status: 500})
         const {title, body, slug} = await req.json()
         const savePost = await prisma.post.create({
             data: {
@@ -70,6 +72,9 @@ async function PUT(req) {
     try {
         const {title, body, slug, id} = await req.json()
         console.log({title, body, slug, id})
+        const getUser = await prisma.post.findUnique({select: {author: {select: {username: true}}}, where: {id}})
+        if (!await authorizeUser({username: getUser.author.username, role: ['User', 'Admin'], compareRole:true, compareUser: true})) return NextResponse.json({error: "Invalid permission"}, {status: 500})
+
         const updatePost = await prisma.post.update({
             data: {
                 title,
@@ -96,6 +101,8 @@ async function PUT(req) {
 async function DELETE(req) {
     try {
         const {id} = await req.json()
+        const getUser = await prisma.post.findUnique({select: {author: {select: {username: true}}}, where: {id}})
+        if (!await authorizeUser({username: getUser.author.username, role: ['User', 'Admin'], compareRole:true, compareUser: true})) return NextResponse.json({error: "Invalid permission"}, {status: 500})
         const deletePost = await prisma.post.delete({where: {id}})
         revalidatePostRelevant('/post/'+deletePost.slug)
         return NextResponse.json(deletePost, {status: 200})

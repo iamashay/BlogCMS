@@ -12,7 +12,7 @@ const prisma = new PrismaClient()
 export default async function EditPost({params}) {
     const postId = params.id
     const postData = await getPostDataById(postId)
-    if (!await authorizeUser({username: postData?.author?.username, compareUser: true})) redirect('/dashboard/post/new')
+    if (!await authorizeUser({username: postData?.author?.username, role: ['User', 'Admin'], compareRole:true, compareUser: true})) redirect('/dashboard/post/new')
     return (
         <main className='flex flex-col justify-center m-5'>
             <h1 className="dashboard-head">Edit Post</h1>

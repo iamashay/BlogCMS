@@ -1,6 +1,6 @@
 import Article from "@/components/Article"
 import Comment from "@/components/CommentBox"
-import { cache } from 'react'
+import { Suspense, cache } from 'react'
 import { PrismaClient } from "@prisma/client"
 import { headers } from 'next/headers'
 
@@ -51,18 +51,7 @@ async function getPost (slug) {
 
 }
 
-async function getComments(slug) {
-    //await new Promise((resolve, rejec) => setInterval(() => resolve(2), 9000))
-    try {
-        const commentData = await fetch(API_URL+'/comment?slug='+slug, {cache: "no-cache"})
-        const commentDataJSON = await commentData.json()
-        return commentDataJSON
-    } catch (e) {
-        console.log(e)
-        return {}
-    }
 
-}
 
 const postComment = [
     {
@@ -98,7 +87,8 @@ export default async function ArticlePage({article, params}) {
         <div className='flex justify-center my-5'>
             <Article article={post}>
             {
-                !post.commentEnabled && <Comment data={await getComments(slug)} />
+                !post.commentEnabled && 
+                    <Comment slug={slug} />
             } 
             </Article>
         </div>
