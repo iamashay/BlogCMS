@@ -14,6 +14,14 @@ async function GET(req, searchParams) {
         const slug = await req.nextUrl.searchParams.get('slug')
         const cursor = await req.nextUrl.searchParams.get('cursor')
         const limit = await req.nextUrl.searchParams.get('limit')
+        const isCount = await req.nextUrl.searchParams.get('count')
+        if (isCount) 
+            return NextResponse.json(await prisma.comment.count(), {status: 200})
+        const where = { 
+                post: {
+                    slug
+                }
+        }
         const findQuery = {
             orderBy: [ { createdAt: 'asc' } ], 
             select: {
@@ -23,27 +31,25 @@ async function GET(req, searchParams) {
                 createdAt: true,
                 author: {select: {username: true}},
             },
-            where: {
-                post: {
-                    slug
-                }
-            },
+            where,
         }
         if (limit) findQuery.take = limit
         if (cursor) findQuery.cursor = {id: cursor}
         const commentList = await prisma.$transaction([
-            prisma.comment.count(),
+            prisma.comment.count({where}),
             prisma.comment.findMany(findQuery)])
         return NextResponse.json(commentList, {status: 200})
     }catch(err){
         // if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        //     // The .code property can be accessed in a type-safe manner
+         //     // The .code property can be accessed in a type-safe manner
         //     if (err?.code === 'P2002') {
         //         if (err?.meta?.target[0] === 'slug') return NextResponse.json({error: 'Slug already exists'}, {status: 500})
         //     }
         // } 
+        console.log(err)
         if (err instanceof Prisma.PrismaClientValidationError ) {
             // The .code property can be accessed in a type-safe manner
+            
             return NextResponse.json({error: 'Missing parameters'}, {status: 500})
         }
         return NextResponse.json({error: err.message, code: err.code}, {status: 500})

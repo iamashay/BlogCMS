@@ -36,7 +36,7 @@ const menuData = [
           {
               name: 'All Posts',
               href: '/dashboard/post/all',
-              role: 'Admin',
+              role: ['Admin'],
           }
       ]
   },
@@ -50,7 +50,7 @@ const menuData = [
         {
             name: 'All Comments',
             href: '/dashboard/post/new',
-            role: 'Admin',
+            role: ['Admin'],
         },
     ]
   },
@@ -60,7 +60,7 @@ const menuData = [
           {
               name: 'All Users',
               href: '/category/tech/news',
-              role: 'Admin',
+              role: ['Admin'],
           },
           {
               name: 'Profile',

@@ -19,18 +19,24 @@ export const {
           password: { label: "Password", type: "password" }
         },
         async authorize(credentials, req) {
-          const {username, email, password} = credentials
-          const user = await prisma.user.findUnique({where: {username}})
-          //console.log('user ', user, username, credentials, {where: {username}})
-          if (!user) throw new Error('No user found!')
-          const validatePassword = bcryptjs.compare(password, user.password)
-          if (validatePassword) {
-            const {username, role, email} = user
-            return {username, role, email}
-          } else {
-            throw new Error('Invalid Password')
-    
+          try {
+            const {username, email, password} = credentials
+            const user = await prisma.user.findUnique({where: {username}})
+            //console.log('user ', user, username, credentials, {where: {username}})
+            if (!user) throw new Error('No user found!')
+            const validatePassword = await bcryptjs.compare(password, user.password)
+            if (validatePassword) {
+              const {username, role, email} = user
+              return {username, role, email}
+            } else {
+              // throw new Error('Invalid Password')
+              return null
+            }
+          } catch (e) {
+              console.log(e)
+              return null
           }
+
         },
 
       }),

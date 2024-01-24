@@ -12,6 +12,9 @@ const revalidatePostRelevant = (slug, newPost) => {
 
 async function GET(req) {
     try {
+        const isCount = await req.nextUrl.searchParams.get('count')
+        if (isCount) 
+            return NextResponse.json(await prisma.post.count(), {status: 200})
         const postList = await prisma.post.findMany(
             {
                 take: 15, 

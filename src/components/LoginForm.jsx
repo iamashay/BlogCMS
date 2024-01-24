@@ -25,8 +25,9 @@ export default function Login() {
         console.log(signInStatus)
         setLoading(false)
         toast.dismiss(loginMsgId)
-        if (!signInStatus?.ok) {
-            return toast.error(signInStatus.error)
+        console.log(signInStatus)
+        if (signInStatus?.error) {
+            return toast.error("Invalid login")
 
         }
         toast.success("Login success")

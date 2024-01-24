@@ -19,9 +19,8 @@ async function getComments(slug) {
 }
 
 async function CommentList({slug, commentData, setCommentData}) {
-    const data = await useMemo(() => getComments(slug), [slug])
-    const totalComments = data[0]
-    if (commentData.length === 0) setCommentData(data[1])
+    const [totalComments, data] = await useMemo(() => getComments(slug), [slug])
+    if (commentData.length === 0 && totalComments != 0) setCommentData(data)
     return (
         <section>
             {

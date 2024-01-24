@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react"
 
 function Menu({item, role}) {
     const pathName = usePathname()
-    const isRender = item?.role ? item?.role === role : true
+    const isRender = item?.role ? item?.role.includes(role) : true
     return isRender && (
         <div className="my-2">
             {
@@ -19,7 +19,7 @@ function Menu({item, role}) {
                     <h3 className="text-gray-400 mx-2">{item?.name}</h3>
                     <div className="text-sm">
                         { 
-                            item?.child?.length > 0 && item.child.map(childItem => (childItem?.role ? childItem?.role === role : true) && (
+                            item?.child?.length > 0 && item.child.map(childItem => (childItem?.role ? childItem?.role.includes(role) : true) && (
                                 <Link href={childItem.href} key={childItem.name+(+new Date())} className={`${pathName === childItem.href && 'bg-gray-300 disabled:pointer-events-none'} mx-4 p-1 cursor-pointer hover:bg-gray-100 block transition-all rounded`}>{childItem.name}</Link>
                             ))
                         }
