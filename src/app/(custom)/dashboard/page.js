@@ -1,5 +1,4 @@
-'use client'
-
+import { SmallCardSkeleton } from '@/components/LoadingSkeleton/SmallCard'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
@@ -43,9 +42,7 @@ export default function Home() {
         <div className='grid grid-cols-4 gap-10 break-words w-4/5'>
           {
             smallCardList.map((item) => (
-              <Suspense key={item.name+item.value}>
                 <SmallCard key={item.name+item.value} name={item.name} value={item.value} link={item.link} fetchURL={item.fetchURL} />
-              </Suspense>
             ))
           }
         </div>
