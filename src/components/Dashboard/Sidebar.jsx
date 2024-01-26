@@ -41,7 +41,7 @@ export default function Sidebar({menuData}) {
     const userData = session?.user
     return (
         <div className="relative">
-            <aside className={`h-screen flex flex-col shadow-xl overflow-x-hidden transition-all duration-300 ${showSidebar ? 'w-56' : 'w-0 opacity-0'}`}>
+            <aside className={`flex flex-col shadow-xl  transition-all h-screen duration-300 ${showSidebar ? 'w-56' : 'w-0 opacity-0 overflow-hidden'}`}>
                 <Link href='/dashboard'><Image src={Logo} alt='logo' /></Link>
                 <div className="flex items-center text-sm gap-2 m-4 rounded-md p-2 bg-slate-200"><UserIcon className="flex-shrink-0"/> <span className="break-words">{userData?.username || 'Not Found'}</span></div>
                 <div>

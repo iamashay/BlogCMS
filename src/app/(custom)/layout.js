@@ -83,11 +83,11 @@ export default async function Layout({ children }) {
 
   return (
     <html lang="en">
-    <body className={inter.className}>
+    <body className={`${inter.className} overflow-hidden h-screen`}>
       <Toaster></Toaster>
-      <div className='flex flex-row w-full'>
+      <div className='flex flex-row w-full h-full'>
           <Sidebar menuData={menuData}  />
-          <div className='flex flex-col flex-grow'>
+          <div className='flex flex-col flex-grow overflow-auto'>
             <Header />
             {children}
           </div>

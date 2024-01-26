@@ -123,7 +123,6 @@ async function DELETE(req) {
         const {id} = await req.json()
         if (!await authorizeUser({role: ['Admin'], compareRole:true})) throw Error("Invalid Permission")
         const deleteComment = await prisma.comment.delete({where: {id}})
-        revalidatePostRelevant('/post/'+deletePost.slug)
         return NextResponse.json(deleteComment, {status: 200})
     }catch(err){
         if (err instanceof Prisma.PrismaClientKnownRequestError) {

@@ -37,10 +37,10 @@ function IndeterminateCheckbox({
     )
 }
 
-const deletePost = async ({id, slug, deletePostRow}) => {
+const deleteComment = async ({id, deleteCommentRow}) => {
   try {
-    const loadingMsg = toast.loading("Deleting post...")
-    const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post`, {
+    const loadingMsg = toast.loading("Deleting comment...")
+    const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/comment`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -53,22 +53,22 @@ const deletePost = async ({id, slug, deletePostRow}) => {
     toast.dismiss(loadingMsg)
     const body = await result.json()
     if (result.status !== 200) return toast.error(body.error)
-    toast.success("Post successfully deleted!")
-    deletePostRow(slug)
+    toast.success("Comment successfully deleted!")
+    deleteCommentRow(id)
   }catch(e) {
     toast.error('Error: '+e)
   }
 }
 
-const RowAction = ({href, id, deletePostRow, slug}) => {
+const RowAction = ({href, id, deleteCommentRow}) => {
     const [popup, setPopup] = useState(false)
     
     return (
         <span className='flex gap-4'>
-            <Link href={href}><EditPostIcon title={'Edit the post'}/></Link>
-            <div onClick={() => setPopup(!popup)} className='cursor-pointer'><DeletePostIcon title={'Delete the post'}/></div>
+            <Link href={href}><EditPostIcon title={'Edit the comment'}/></Link>
+            <div onClick={() => setPopup(!popup)} className='cursor-pointer'><DeletePostIcon title={'Delete the comment'}/></div>
             {
-              popup && <PopUp onClick={() => deletePost({id, deletePostRow, slug})} />
+              popup && <PopUp onClick={() => deleteComment({id, deleteCommentRow})} />
             }
         </span>
     )
@@ -79,8 +79,8 @@ export default function CommentListTable({defaultData}) {
     const [data, setData] = useState(() => [...defaultData])
     const [rowSelection, setRowSelection] = useState({})
 
-    const deletePostRow = (slug) => {
-      setData((data) => data.filter((row) => row.slug !== slug))
+    const deleteCommentRow = (id) => {
+      setData((data) => data.filter((row) => row.id !== id))
     }
 
     const columns = useMemo( () => [
@@ -126,7 +126,7 @@ export default function CommentListTable({defaultData}) {
         }),
         columnHelper.display({
             id: 'actions',
-            cell: info => <RowAction href={"/dashboard/comment/edit/"+info.row.original.id} id={info.row.original.id} slug={info.row.original.slug} deletePostRow={deletePostRow}/>,
+            cell: info => <RowAction href={"/dashboard/comment/edit/"+info.row.original.id} id={info.row.original.id} deleteCommentRow={deleteCommentRow}/>,
           }),
     ], [])
 
