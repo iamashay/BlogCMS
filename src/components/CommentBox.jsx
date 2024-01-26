@@ -45,7 +45,7 @@ function CommentForm({slug, setCommentData}) {
     const saveComment = async (event) => {
         event.preventDefault();
         setLoading(true)
-        const saveLoadMsg = toast.loading("Signing Up...")
+        const saveLoadMsg = toast.loading("Adding comment...")
         try {
             const formElm = event.target
             const form = new FormData(formElm)

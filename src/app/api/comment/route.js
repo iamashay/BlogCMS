@@ -76,7 +76,6 @@ async function POST(req){
         const saveCommment = await prisma.comment.create({
             data: query
         })
-        revalidatePostRelevant('/post/'+slug, true)
         return NextResponse.json(saveCommment, {status: 200})
     }catch(err){
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
