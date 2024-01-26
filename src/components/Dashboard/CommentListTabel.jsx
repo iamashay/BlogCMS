@@ -109,12 +109,16 @@ export default function CommentListTable({defaultData}) {
             ),
           }),
         columnHelper.accessor('body', {
-            cell: info => <Link href={"post/edit/"+info.row.original.id}>{createSummary(info.getValue())}</Link>,
-            header: () => <span>Title</span>,
+            cell: info => <Link href={"comment/edit/"+info.row.original.id}>{createSummary(info.getValue(), 100)}</Link>,
+            header: () => <span>Body</span>,
         }),
         columnHelper.accessor('guestName', {
             cell: info =>  info.getValue(),
-            header: () => <span>Username</span>,
+            header: () => <span>Name</span>,
+        }),
+        columnHelper.accessor('email', {
+          cell: info =>  info.getValue(),
+          header: () => <span>Email</span>,
         }),
         columnHelper.accessor('createdAt', {
             header: () => 'Posted At',
@@ -122,7 +126,7 @@ export default function CommentListTable({defaultData}) {
         }),
         columnHelper.display({
             id: 'actions',
-            cell: info => <RowAction href={"/dashboard/post/edit/"+info.row.original.id} id={info.row.original.id} slug={info.row.original.slug} deletePostRow={deletePostRow}/>,
+            cell: info => <RowAction href={"/dashboard/comment/edit/"+info.row.original.id} id={info.row.original.id} slug={info.row.original.slug} deletePostRow={deletePostRow}/>,
           }),
     ], [])
 

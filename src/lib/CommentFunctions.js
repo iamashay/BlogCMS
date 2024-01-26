@@ -4,10 +4,7 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export const createSummary = (body, limit) => {
-    !limit && process?.env?.SUMMARY_CHAR_LIMIT ?
-    limit = process.env.SUMMARY_CHAR_LIMIT :
-    limit = 60
+export const createSummary = (body, limit = process?.env?.SUMMARY_CHAR_LIMIT) => {
     return body?.replace(/(<([^>]+)>)/gi, '').trim().slice(0, limit)+'...'
 }
 

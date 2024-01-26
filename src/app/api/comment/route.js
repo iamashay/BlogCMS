@@ -3,11 +3,8 @@ import { NextResponse } from "next/server"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/auth"
 const prisma = new PrismaClient()
+import { authorizeUser } from "@/lib/Authorize"
 
-const revalidatePostRelevant = (slug, newPost) => {
-    revalidatePath('/', "page")
-    if (!newPost) revalidatePath('/post/'+slug, "page")
-}
 
 async function GET(req, searchParams) {
     try {
@@ -94,20 +91,22 @@ async function POST(req){
 
 async function PUT(req) {
     try {
-        const {title, body, slug, id} = await req.json()
-        console.log({title, body, slug, id})
-        const updatePost = await prisma.post.update({
+        if (!await authorizeUser({role: ['Admin'], compareRole:true})) throw Error("Invalid Permission")
+        const {body, guestName, email, id} = await req.json()
+        console.log({body, guestName, email, id})
+        const updateComment = await prisma.comment.update({
             data: {
-                title,
-                body,
-                slug,
+                body, 
+                guestName, 
+                id,
+                email
             },
             where: {
                 id
-            }
+            },
+
         })
-        revalidatePostRelevant('/post/'+updatePost.slug)
-        return NextResponse.json(updatePost, {status: 200})
+        return NextResponse.json(updateComment, {status: 200})
     }catch(err){
         if (err instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
@@ -115,6 +114,7 @@ async function PUT(req) {
             //     if (err?.meta?.target[0] === 'slug') return NextResponse.json({error: 'Slug already exists'}, {status: 500})
             // }
         }
+        console.log(err)
         return NextResponse.json({error: err.message}, {status: 500})
     }
 }
@@ -122,6 +122,7 @@ async function PUT(req) {
 async function DELETE(req) {
     try {
         const {id} = await req.json()
+        if (!await authorizeUser({role: ['Admin'], compareRole:true})) throw Error("Invalid Permission")
         const deleteComment = await prisma.comment.delete({where: {id}})
         revalidatePostRelevant('/post/'+deletePost.slug)
         return NextResponse.json(deleteComment, {status: 200})

@@ -43,16 +43,17 @@ const menuData = [
   {
     name: 'Comments',
     child: [
-        {
-            name: 'Your Comments',
-            href: '/dashboard/post',
-        },
+        // {
+        //     name: 'Your Comments',
+        //     href: '/dashboard/post',
+        // },
         {
             name: 'All Comments',
-            href: '/dashboard/post/new',
+            href: '/dashboard/comment',
             role: ['Admin'],
         },
-    ]
+    ],
+    role: ['Admin'],
   },
   {
       name: 'User',

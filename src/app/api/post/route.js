@@ -45,7 +45,7 @@ async function GET(req) {
 async function POST(req){
     try {
         const session = await authorizeUser()
-        if (!await authorizeUser) return NextResponse.json({error: "Invalid permission"}, {status: 500})
+        if (!await authorizeUser({role: ['Admin', 'User'], compareRole:true})) throw Error("Invalid Permission")
         const {title, body, slug} = await req.json()
         const savePost = await prisma.post.create({
             data: {

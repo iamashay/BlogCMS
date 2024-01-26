@@ -3,7 +3,10 @@ import { getPostsByUser, getAllPosts } from "@/lib/PostFunctions"
 import { PopUp } from "@/components/Reusables/PopUp"
 import { authorizeUser } from "@/lib/Authorize"
 import { redirect } from "next/navigation"
-import CommentListTable from "@/components/Dashboard/CommentListTabel"
+import dynamic from 'next/dynamic'
+
+const CommentListTable = dynamic(() => import('@/components/Dashboard/CommentListTabel'), { ssr: false })
+
 import { getAllComments } from "@/lib/CommentFunctions"
 
 const defaultData = [
@@ -18,13 +21,13 @@ const defaultData = [
 ]
 
 
-export default async function ViewComment({searchParams}) {
-    if (!await authorizeUser()) redirect('/')
+export default async function ViewAllComment({searchParams}) {
+    if (!await authorizeUser({role: ['Admin'], compareRole: true})) redirect('/')
     const defaultData = await getAllComments()
     //console.log(defaultData)
     return (
         <main className='m-5'>
-            <h1 className="dashboard-head">All Posts</h1>
+            <h1 className="dashboard-head">All Comments</h1>
             <CommentListTable defaultData={defaultData}></CommentListTable>
         </main>
     )
