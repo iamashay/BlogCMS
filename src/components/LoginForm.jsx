@@ -4,13 +4,15 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 import { useState } from "react"
-
+import { GoogleBtn } from './AuthButton';
 export default function Login() {
     const router = useRouter()
     const [loginData, setLoginData] = useState({
         username: '',
         password: ''
     })
+
+
 
     const [loading, setLoading] = useState(false)
 
@@ -48,6 +50,9 @@ export default function Login() {
                 </div>
                 <button type="submit" disabled={loading} className="text-white self-end bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login</button>
             </form>
+            <div className='my-5'>
+                <GoogleBtn onClick={() => signIn('google')}></GoogleBtn>
+            </div>
             <Toaster/>
         </>
     )

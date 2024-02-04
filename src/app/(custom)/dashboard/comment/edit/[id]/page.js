@@ -3,11 +3,13 @@ import { getPostDataById } from "@/lib/PostFunctions";
 import { authorizeUser } from "@/lib/Authorize";
 import { NextResponse } from "next/server";
 import { redirect } from "next/navigation";
-import { CommentForm } from "@/components/Comment/CommentForm";
+import { CommentForm } from "@/components/Dashboard/Comment/CommentForm";
 import { getCommentDataById } from "@/lib/CommentFunctions";
 const prisma = new PrismaClient()
 
-
+export const metadata = {
+    title: `Edit Comment`, 
+  }
 
 export default async function EditComment({params}) {
     const commentId = params.id

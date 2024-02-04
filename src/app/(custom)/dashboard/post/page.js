@@ -4,18 +4,9 @@ import { authorizeUser } from "@/lib/Authorize"
 import { getPostsByUser, getAllPosts } from "@/lib/PostFunctions"
 import { redirect } from "next/navigation"
 
-const defaultData = [
-    {
-      firstName: 'tanner',
-      lastName: 'linsley',
-      age: 24,
-      visits: 100,
-      status: 'In Relationship',
-      progress: 50,
-    }
-]
-
-
+export const metadata = {
+    title: `View Post`, 
+}
 
 export default async function ViewPost() {
     const session = await authorizeUser()

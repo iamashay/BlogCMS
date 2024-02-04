@@ -62,17 +62,10 @@ export function CommentForm({commentData, create}) {
                     <div className='flex gap-4 items-center'>
                         <label htmlFor="email">Email:</label><input className='flex-grow border border-gray-300 my-2 p-1 w-full shadow-sm text-sm' type="text" id="email" name="email" defaultValue={(commentData?.email)}></input>
                     </div>
-                    <Editor
-                    id = "tinyMCE-editor"
-                    onInit={(evt, editor) => editorRef.current = editor}
-                    apiKey='o7iuyugse4xec4wuzij8iyena1xztv24vfwi0yt9m0q9fh74'
-                    initialValue={commentData?.body}
-                    init={{
-                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                        placeholder: "Your comment content goes here!",
-                    }}
-                    />
+                    <label for={'body'}>
+                        Comment:
+                    </label>
+                    <textarea name="body" id="body" className='border border-gray-300 my-2 p-1 h-28' placeholder='Enter your comment body' row={20}>{commentData?.body}</textarea>
                     <button type='submit' disabled={saving} className='self-end my-4 bg-sky-500 hover:bg-sky-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white'>Submit</button>
                 </form>
             )

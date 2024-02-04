@@ -9,6 +9,10 @@ const CommentListTable = dynamic(() => import('@/components/Dashboard/CommentLis
 
 import { getAllComments } from "@/lib/CommentFunctions"
 
+export const metadata = {
+    title: `All Comments`, 
+}
+
 const defaultData = [
     {
       firstName: 'tanner',

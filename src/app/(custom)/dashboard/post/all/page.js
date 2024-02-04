@@ -3,6 +3,11 @@ import { getPostsByUser, getAllPosts } from "@/lib/PostFunctions"
 import { PopUp } from "@/components/Reusables/PopUp"
 import { authorizeUser } from "@/lib/Authorize"
 import { redirect } from "next/navigation"
+
+export const metadata = {
+    title: `All Posts`, 
+  }
+
 const defaultData = [
     {
       firstName: 'tanner',

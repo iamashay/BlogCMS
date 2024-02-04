@@ -1,15 +1,25 @@
 import { cache } from 'react'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { PrismaClient } from '@prisma/client'
+import { revalidatePath } from "next/cache"
 
 const prisma = new PrismaClient()
 
-export const createSummary = (body) => {
-    return body?.replace(/(<([^>]+)>)/gi, '').trim().slice(0, process.env.SUMMARY_CHAR_LIMIT)+'...'
+export const createSummary = (body, count) => {
+    return body?.replace(/(<([^>]+)>)/gi, '').trim().slice(0, count || process.env.SUMMARY_CHAR_LIMIT)+'...'
+}
+
+export const createSEOdesc = (body, count) => {
+    return body?.replace(/(<([^>]+)>)/gi, '').trim().slice(0, count || process.env.SUMMARY_CHAR_LIMIT)
 }
 
 export const formatDate = (date) => {
     return date?.split('T')[0]
+}
+
+export const revalidatePostRelevant = (slug, newPost) => {
+    revalidatePath('/', "page")
+    if (!newPost) revalidatePath('/post/'+slug, "page")
 }
 
 export const getPostDataById =  cache( async (id) => {
@@ -19,11 +29,28 @@ export const getPostDataById =  cache( async (id) => {
                 select: {
                     username: true
                 }
-            }
+            },
+            postMeta: true
         },
         where: { id }
     })
-    if (!postData) return redirect('/dashboard/post/new')
+    if (!postData) return notFound()
+    return postData
+})
+
+export const getPostDataBySlug =  cache( async (slug) => {
+    const postData = await prisma.post.findUnique({
+        include: {
+            author: {
+                select: {
+                    username: true
+                }
+            },
+            postMeta: true
+        },
+        where: { slug }
+    })
+    if (!postData) return notFound()
     return postData
 })
 

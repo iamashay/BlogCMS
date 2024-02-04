@@ -1,5 +1,9 @@
-import { PostForm } from "@/components/Post/PostForm";
+import { PostForm } from "@/components/Dashboard/Post/PostForm";
 import { Toaster } from "react-hot-toast";
+
+export const metadata = {
+    title: `Create new post`, 
+  }
 
 export default function NewPost() {
     return (

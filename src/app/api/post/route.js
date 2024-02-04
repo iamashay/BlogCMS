@@ -55,7 +55,11 @@ async function POST(req){
                 author: {
                     connect: {username: session?.user?.username}
                 },
-
+                postMeta: {
+                    create: {
+                        post_title: title
+                    }
+                }
             }
         })
         revalidatePostRelevant('/post/'+savePost.slug, true)
@@ -83,6 +87,7 @@ async function PUT(req) {
                 title,
                 body,
                 slug,
+                
             },
             where: {
                 id
