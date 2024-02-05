@@ -33,57 +33,33 @@ export async function generateMetadata({ params, searchParams }, parent) {
     
 }
 
-async function getPost (slug) {
-    //await new Promise((resolve, rejec) => setInterval(() => resolve(2), 9000))
-    try {
-        const postData = await fetch(API_URL+'/post/'+slug)
-        const postDataJSON = await postData.json()
-        console.log(postDataJSON)
-        return postDataJSON
-    } catch (e) {
-        console.log(e)
-        return {}
-    }
+// async function getPost (slug) {
+//     //await new Promise((resolve, rejec) => setInterval(() => resolve(2), 9000))
+//     try {
+//         const postData = await fetch(API_URL+'/post/'+slug)
+//         const postDataJSON = await postData.json()
+//         console.log(postDataJSON)
+//         return postDataJSON
+//     } catch (e) {
+//         console.log(e)
+//         return {}
+//     }
 
-}
+// }
 
 
 
-const postComment = [
-    {
-        _id: 1,
-        name: "Akarsh",
-        body: "Hey! Excellent Post",
-        date: "2023-12-03"
-    },
-    {
-        _id: 2,
-        name: "Sahu",
-        body: "I am going to buy this!",
-        date: "2023-10-03"
-    },
-    {
-        _id: 3,
-        name: "Raj",
-        body: "I don't agree with  you",
-        date: "2023-11-03"
-    },
-    {
-        _id: 4,
-        name: "Sahil",
-        body: "Hey! Excellent Post",
-        date: "2023-12-03"
-    },
-]
+
 
 export default async function ArticlePage({article, params}) {
     const {slug} = params
-    const post = await getPost(slug)
+    const post = await getPostDataBySlug(slug)
+
     return (
         <div className='flex justify-center my-5'>
             <Article article={post}>
             {
-                !post.commentEnabled && 
+                post.commentEnabled && 
                     <Comment slug={slug} />
             } 
             </Article>

@@ -64,7 +64,7 @@ const menuData = [
           },
           {
               name: 'Profile',
-              href: '/category/tech/sale',
+              href: '/dashboard/profile',
           },
       ]
   },

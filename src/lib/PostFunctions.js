@@ -14,7 +14,8 @@ export const createSEOdesc = (body, count) => {
 }
 
 export const formatDate = (date) => {
-    return date?.split('T')[0]
+    const dateObj = new Date(date)
+    return dateObj.toISOString().split('T')[0]
 }
 
 export const revalidatePostRelevant = (slug, newPost) => {
@@ -39,7 +40,7 @@ export const getPostDataById =  cache( async (id) => {
 })
 
 export const getPostDataBySlug =  cache( async (slug) => {
-    const postData = await prisma.post.findUnique({
+    const postData = await prisma.post.findFirst({
         include: {
             author: {
                 select: {
@@ -50,7 +51,7 @@ export const getPostDataBySlug =  cache( async (slug) => {
         },
         where: { slug }
     })
-    if (!postData) return notFound()
+    if (!postData) throw Error("No post found!")
     return postData
 })
 

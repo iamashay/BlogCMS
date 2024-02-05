@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { PrismaClient } from "@prisma/client"
 import bcryptjs from 'bcryptjs'
 
@@ -34,3 +35,29 @@ export const generateUsername = async ({word}) => {
     return generateUsername({word})
 }
 
+export const getUserDataById =   async (id) => {
+    if (!id) throw Error("Invalid id")
+    const postData = await prisma.user.findFirst({
+        where: { id }
+    })
+    if (!postData) throw Error("No user found")
+    return postData
+}
+
+export const getUserDataByUsername = async (username) => {
+    if (!username) throw Error("Invalid Username")
+    const postData = await prisma.user.findFirst({
+        where: { username }
+    })
+    if (!postData) throw Error("No user found!")
+    return postData
+}
+
+export const getUserDataByEmail = async (email) => {
+    if (!username) throw Error("Invalid Username")
+    const postData = await prisma.user.findFirst({
+        where: { email }
+    })
+    if (!postData) throw Error("No user found!")
+    return postData
+}

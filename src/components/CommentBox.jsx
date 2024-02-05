@@ -1,7 +1,7 @@
 'use client'
 import { formatDate } from "@/lib/PostFunctions"
 import toast, { Toaster } from "react-hot-toast"
-import { Suspense, useState, useMemo } from "react"
+import { Suspense, useState, useMemo, useRef } from "react"
 import { CommentSkeleton } from "./LoadingSkeleton/CommentSkeleton"
 
 async function getComments(slug) {
@@ -18,14 +18,15 @@ async function getComments(slug) {
 
 }
 
-async function CommentList({slug, commentData, setCommentData}) {
-    const [totalComments, data] = await useMemo(() => getComments(slug), [slug])
-    if (commentData.length === 0 && totalComments != 0) setCommentData(data)
+async function CommentList({slug, commentData}) {
+    const [totalComments, data] =  await useMemo( async () =>  getComments(slug), [slug])
+
+    if (commentData.current.length === 0 && totalComments != 0) commentData.current = data
     return (
         <section>
             {
-                commentData?.length > 0 && 
-                commentData.map((comment)=> {
+                commentData?.current?.length > 0 && 
+                commentData?.current?.map((comment)=> {
                     return (
                     <article key={comment.id} className="bg-gray-200 my-2 p-2">
                         <header className="text-sm"><b>{comment.guestName}</b> commented on <time>{formatDate(comment.createdAt)}</time></header>
@@ -38,45 +39,49 @@ async function CommentList({slug, commentData, setCommentData}) {
     ) 
 }
 
-function CommentForm({slug, setCommentData}) {
+const saveComment = async (event, commentData, setLoading, setForceRender) => {
+    event.preventDefault();
+    setLoading(true)
+    const saveLoadMsg = toast.loading("Adding comment...")
+    try {
+        const formElm = event.target
+        const form = new FormData(formElm)
+        const formData = Object.fromEntries(form)
+        const res = await fetch('/api/comment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        const resBody = await res.json()
+        if (res.ok) {
+            toast.success("Comment added!")
+            commentData.current = [resBody, ...commentData.current]
+            setForceRender((force) => !force)
+            formElm.reset()
+            return 
+        }
+        console.log(resBody, res)
+        toast.error(resBody.error)
+    } catch (e){
+        toast.error("Some error occured!")
+        console.error(e)
+    } finally {
+        toast.dismiss(saveLoadMsg)
+        setLoading(false)
+    }
+
+}
+
+function CommentForm({slug, commentData, setForceRender}) {
 
     const [loading, setLoading] = useState(false)
 
-    const saveComment = async (event) => {
-        event.preventDefault();
-        setLoading(true)
-        const saveLoadMsg = toast.loading("Adding comment...")
-        try {
-            const formElm = event.target
-            const form = new FormData(formElm)
-            const formData = Object.fromEntries(form)
-            const res = await fetch('/api/comment', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            })
-            const resBody = await res.json()
-            if (res.ok) {
-                toast.success("Comment added!")
-                setCommentData((data) => [resBody, ...data])
-                formElm.reset()
-                return 
-            }
-            console.log(resBody, res)
-            toast.error(resBody.error)
-        } catch (e){
-            toast.error("Some error occured!")
-        } finally {
-            toast.dismiss(saveLoadMsg)
-            setLoading(false)
-        }
- 
-    }
+    
 
     return (
-    <form className="flex flex-col" onSubmit={saveComment}>
+    <form className="flex flex-col" onSubmit={(e) => saveComment(e, commentData, setLoading, setForceRender) }>
         <div className="relative z-0 w-fit my-5 group">
             <input type="email" name="email" id="email" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
             <label htmlFor="email" className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
@@ -95,15 +100,18 @@ function CommentForm({slug, setCommentData}) {
     )
 }
 
+let i = 0, j = 0
+
 export default function Comment({slug}) {
-    const [commentData, setCommentData] = useState([])
+    const commentData = useRef([])
+    const [force, setForceRender] = useState(false)
     return (
         <section>
             <Toaster></Toaster>
             <h3 className="text-lg font-semibold">Comments:</h3>
-            <CommentForm slug={slug} commentData={commentData} setCommentData={setCommentData}  />
+            <CommentForm slug={slug} commentData={commentData} setForceRender={setForceRender}  />
             <Suspense fallback={<CommentSkeleton count={2}/>}>
-                <CommentList slug={slug} commentData={commentData} setCommentData={setCommentData} />
+                <CommentList slug={slug} commentData={commentData} setForceRender={setForceRender} />
             </Suspense>
         </section>
     )
