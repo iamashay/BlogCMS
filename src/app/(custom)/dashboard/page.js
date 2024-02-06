@@ -2,7 +2,7 @@ import { SmallCardSkeleton } from '@/components/LoadingSkeleton/SmallCard'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
-
+const API_URL = process.env.API_URL
 export async function SmallCard({name, value, link, fetchURL}){
   let getData
   if (fetchURL) {
@@ -25,14 +25,14 @@ const smallCardList = [
     name: 'All Posts',
     value: '12',
     link: '/',
-    fetchURL: 'http://localhost:3000/api/post?count=true',
+    fetchURL: API_URL+'/post?count=true',
     link: '/dashboard/post/'
   },
   {
     name: 'All Comments',
     value: '21',
     link: '/',
-    fetchURL: 'http://localhost:3000/api/comment?count=true',
+    fetchURL: API_URL+'/comment?count=true',
   },
 ]
 
