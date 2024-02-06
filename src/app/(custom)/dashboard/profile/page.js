@@ -9,6 +9,7 @@ export const metadata = {
 
 export default async function EditProfile() {
     const session = await auth()
+    console.log(session)
     const getUserData = await getUserDataById(session?.user?.id)
     return (
         <main className='flex flex-col justify-center my-5 mx-5'>
