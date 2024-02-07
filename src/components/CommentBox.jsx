@@ -13,7 +13,7 @@ async function getComments(slug) {
         return commentDataJSON
     } catch (e) {
         console.log(e)
-        return {}
+        throw Error("Error getting comments")
     }
 
 }
