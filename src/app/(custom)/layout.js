@@ -7,7 +7,7 @@ import UserBox from '@/components/UserBoxSkeleton'
 import Sidebar from '@/components/Dashboard/Sidebar'
 import Header from '@/components/Dashboard/Header'
 import { auth } from '@/auth'
-import { NextResponse } from 'next/server'
+import { redirect } from 'next/navigation'
 import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -78,7 +78,7 @@ const menuData = [
 export default async function Layout({ children }) {  
   const session = await auth()
   if (!session)
-  return NextResponse.redirect(new URL('/login', request.url))
+  return redirect('/login')
 
   return (
     <html lang="en">
