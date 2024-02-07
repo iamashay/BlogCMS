@@ -29,8 +29,8 @@ export const {
             if (!password || !user.password) throw new Error('Invalid false password!')
             const validatePassword = await bcryptjs.compare(password, user.password)
             if (validatePassword) {
-              const {username, role, email} = user
-              return {username, role, email}
+              const {username, role, email, id} = user
+              return {username, role, email, id}
             } else {
               // throw new Error('Invalid Password')
               return null
