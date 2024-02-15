@@ -4,7 +4,7 @@ import bcryptjs from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
-function generateRandomString(length) {
+function generateRandomString(length=8) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@/.%_';
     const charactersLength = characters.length;
